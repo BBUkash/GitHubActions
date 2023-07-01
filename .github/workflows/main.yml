@@ -47,7 +47,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@master
       with:
           role-to-assume: arn:aws:iam::798218682449:role/github-action-role
-          #role-session-name: Github-S3-Upload
+          role-session-name: Github-S3-Upload
           aws-region: ${{ env.AWS_REGION }}  
 
     # env:
