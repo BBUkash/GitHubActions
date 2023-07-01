@@ -2,9 +2,9 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions
 on: [push]
 
-# env:
-#   BUCKET_NAME : "test-bucket-github"
-#   AWS_REGION : "us-east-2"
+env:
+  AWS_S3_BUCKET : "uk-demo-bucket"
+  AWS_REGION : "us-west-2"
   
 permissions:
       id-token: write
@@ -30,3 +30,20 @@ jobs:
       
     - name: Create a temporary artifact downloads folder
       run: mkdir ${{ github.workspace }}\build
+
+    - name: Build solution
+      run: msbuild GitHubActions\DemoWebApplication\DemoWebApplication.sln" /p:UseSharedCompilation=false /t:rebuild /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True  /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl=${{ github.workspace }}\build
+
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@master
+      with:
+          role-to-assume: arn:aws:iam::798218682449:role/github-action-role
+          role-session-name: Github-S3-Upload
+          aws-region: ${{ env.AWS_REGION }}  
+
+    # env:
+    #     AWS_S3_BUCKET: ${{ env.AWS_S3_BUCKET }}
+
+    - name: Pushing a revision to AWS S3
+      run: | 
+          aws deploy push --application-name DemoWebApplication --description "Testing the DemoWebApplication" --ignore-hidden-files --s3-location s3://${{ env.AWS_S3_BUCKET }}/demobuild.zip --source ${{ github.workspace }}\build
