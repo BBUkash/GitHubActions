@@ -1,0 +1,32 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions
+on: [push]
+
+# env:
+#   BUCKET_NAME : "test-bucket-github"
+#   AWS_REGION : "us-east-2"
+  
+permissions:
+      id-token: write
+      contents: read 
+
+jobs:
+ job_1:  
+    name: build
+    runs-on: windows-2019
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+      
+    - name: Install AWS CLI
+      run: choco install awscli
+   
+    - name: Setup MSBuild Path
+      uses: microsoft/setup-msbuild@v1
+
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1.1
+      
+    - name: Create a temporary artifact downloads folder
+      run: mkdir ${{ github.workspace }}\build
