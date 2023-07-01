@@ -32,7 +32,7 @@ jobs:
       run: mkdir ${{ github.workspace }}\build
 
     - name: Build solution
-      run: msbuild GitHubActions\DemoWebApplication\DemoWebApplication.sln" /p:UseSharedCompilation=false /t:rebuild /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True  /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl=${{ github.workspace }}\build
+      run: msbuild DemoWebApplication/DemoWebApplication.sln /p:UseSharedCompilation=false /t:rebuild /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True  /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl=${{ github.workspace }}\build
 
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@master
