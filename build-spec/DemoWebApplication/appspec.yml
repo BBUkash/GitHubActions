@@ -1,0 +1,15 @@
+version: 0.0
+os: windows
+files:
+  - source: /
+    destination: C:\inetpub\Login
+    runas: administrator
+hooks:
+    BeforeInstall:
+    - location: before-install.ps1
+      runas: administrator
+      timeout: 900
+    AfterInstall:
+    - location: after-install.ps1
+      runas: administrator
+      timeout: 900

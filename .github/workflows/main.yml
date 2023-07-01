@@ -34,6 +34,15 @@ jobs:
     - name: Build solution
       run: msbuild DemoWebApplication/DemoWebApplication.sln /p:UseSharedCompilation=false /t:rebuild /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:DeleteExistingFiles=True  /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl=${{ github.workspace }}\build
 
+    - name: Move the AppSpec file to build folder
+      run: |
+           Move-Item -Path ${{ github.workspace }}\build-spec\DemoWebApplication\after-install.ps1 -Destination ${{ github.workspace }}\build\after-install.ps1 
+           Move-Item -Path ${{ github.workspace }}\build-spec\DemoWebApplication\before-install.ps1 -Destination ${{ github.workspace }}\build\before-install.ps1
+           Move-Item -Path ${{ github.workspace }}\build-spec\DemoWebApplication\appspec.yml -Destination ${{ github.workspace }}\build\appspec.yml  
+        
+    - name: Zip the Artifacts
+      run: Compress-Archive -Path ${{ github.workspace }}\build\* -Destination ${{ github.workspace }}\build.zip
+    
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@master
       with:
