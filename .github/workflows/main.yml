@@ -55,4 +55,4 @@ jobs:
 
     - name: Pushing a revision to AWS S3
       run: | 
-          aws deploy push --application-name DemoWebApplication --description "Testing the DemoWebApplication" --ignore-hidden-files --s3-location s3://${{ secrets.AWS_S3_BUCKET }}/demobuild.zip --source ${{ github.workspace }}\build
+          aws deploy push --application-name CodeDeploy --description "Testing the DemoWebApplication" --ignore-hidden-files --s3-location s3://${{ secrets.AWS_S3_BUCKET }}/demobuild.zip --source ${{ github.workspace }}\build
