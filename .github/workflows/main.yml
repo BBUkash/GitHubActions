@@ -46,7 +46,7 @@ jobs:
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@master
       with:
-          role-to-assume: arn:aws:iam::798218682449:role/EC2-CodeDeploy
+          role-to-assume: ${{ secrets.EC2_CODEDEPLOY_ARN }}
           role-session-name: Github-S3-Upload
           aws-region: ${{ env.AWS_REGION }}  
 
@@ -56,3 +56,8 @@ jobs:
     - name: Pushing a revision to AWS S3
       run: | 
           aws deploy push --application-name CodeDeploy --description "Testing the DemoWebApplication" --ignore-hidden-files --s3-location s3://${{ secrets.AWS_S3_BUCKET }}/demobuild.zip --source ${{ github.workspace }}\build
+
+    - name: Create CodeDeploy Deployment
+      id: deploy
+      run: |
+          aws deploy create-deployment --application-name CodeDeploy --deployment-group-name CodeDeployGroup --deployment-config-name CodeDeployDefault.OneAtATime --s3-location bucket=${{ secrets.AWS_S3_BUCKET }},bundleType=zip,key=loginbuild.zip
