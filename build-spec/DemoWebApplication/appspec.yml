@@ -2,7 +2,7 @@ version: 0.0
 os: windows
 files:
   - source: /
-    destination: C:\inetpub\Login
+    destination: C:\inetpub\DemoWebApplication
     runas: administrator
 hooks:
     BeforeInstall:
